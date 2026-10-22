@@ -55,9 +55,11 @@ export default function Faq() {
             <section className="cl-faq">
                 <div className="container cl-faq-inner">
 
-                    <div className="cl-faq-head">
-                        <h2 className="cl-faq-title">Questions fréquentes</h2>
-                        <p className="cl-faq-subtitle">Tout ce qu'il faut savoir avant de commander.</p>
+
+
+                    <div className='title-page cl-faq-head'>
+                        <h2 className="cl-section-title">Questions fréquentes</h2>
+                        <p className="cl-section-sub-title">Tout ce qu'il faut savoir avant de commander</p>
                     </div>
 
                     <div className="cl-faq-list">
@@ -85,10 +87,9 @@ export default function Faq() {
                             <h3>Une autre question ?</h3>
                             <p>Notre équipe vous répond sous 24h ouvrées.</p>
                         </div>
-                        <a href="https://wa.me/message/R4PMXGWSUYASJ1" target="_blank" rel="noreferrer" className="cl-faq-more-btn">
-                            Nous contacter
-                            <span><FiArrowRight /></span>
-                        </a>
+                        <a href="/boutique" target="_blank" rel="noreferrer" class="btn-secondary">Nous contacter<span>
+                            <FiArrowRight />
+                        </span></a>
                     </div>
 
                 </div>

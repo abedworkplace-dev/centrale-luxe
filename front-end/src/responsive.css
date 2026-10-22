@@ -169,6 +169,26 @@
     }
 
 
+    .cl-innerhero-title {
+        font-size: 50px;
+        line-height: 55px;
+    }
+
+    .cl-contactus-form {
+        order: 1;
+        /* Passe en premier (à gauche) */
+    }
+
+    .cl-contactus-info {
+        order: 2;
+        /* Passe en second (à droite) */
+    }
+
+    .cl-contactus-submit {
+        margin: 0;
+    }
+
+
 }
 
 
@@ -367,7 +387,7 @@
     }
 
     .cl-testimonial-card {
-        min-height: 150px;
+        min-height: 250px;
     }
 
     .cl-testimonial-avatars .cl-testimonial-avatar-img {
@@ -394,7 +414,31 @@
         display: none;
     }
 
+
+    .cl-innerhero-title {
+        font-size: 40px;
+        line-height: 45px;
+    }
+
     .cl-product-discover {
         display: none;
     }
+
+    .cl-product-actions {
+        justify-content: right;
+    }
+
+    .cl-promo-timer-item {
+        padding: 20px 0;
+    }
+
+    .cl-promo-timer-value {
+        font-size: 25px;
+    }
+
+    .cl-faq-head {
+        text-align: left;
+    }
+
+
 }

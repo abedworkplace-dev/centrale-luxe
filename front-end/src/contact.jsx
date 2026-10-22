@@ -24,6 +24,10 @@ export default function Contact() {
 
             <section className="cl-contactus">
                 <div className="container">
+                    <div className='title-page'>
+                        <h2 className="cl-section-title">Échangeons Ensemble</h2>
+                        <p className="cl-section-sub-title">L’élégance commence par <span>une relation de confiance</span></p>
+                    </div>
                     <div className="cl-contactus-grid">
                         <div className="cl-contactus-info">
 
@@ -44,13 +48,15 @@ export default function Contact() {
                                 </p>
                             </div>
 
-                            <span className="cl-contactus-label">Follow us</span>
-                            <div className="cl-contactus-socials">
-                                <a className="cl-contactus-social" target='__blank' href="https://www.tiktok.com/@central.luxe?_r=1&_t=ZS-990kAxNMaRQ"><FaTiktok /></a>
-                                <a className="cl-contactus-social" target='__blank' href="https://wa.me/message/R4PMXGWSUYASJ1"><FaWhatsapp /></a>
-                                <a className="cl-contactus-social" target='__blank' href="https://www.facebook.com/share/1EVFnjrzhC/?mibextid=wwXIfr"><FaFacebookF /></a>
-                                <a className="cl-contactus-social" target='__blank' href="https://www.instagram.com/centralluxe1?igsi=cjIybnVtNHdzdGtp&utm_source=qr"><FaInstagram /></a>
+                            <div>
+                                <span className="cl-contactus-label">Follow us</span>
+                                <div className="cl-contactus-socials">
+                                    <a className="cl-contactus-social" target='__blank' href="https://www.tiktok.com/@central.luxe?_r=1&_t=ZS-990kAxNMaRQ"><FaTiktok /></a>
+                                    <a className="cl-contactus-social" target='__blank' href="https://wa.me/message/R4PMXGWSUYASJ1"><FaWhatsapp /></a>
+                                    <a className="cl-contactus-social" target='__blank' href="https://www.facebook.com/share/1EVFnjrzhC/?mibextid=wwXIfr"><FaFacebookF /></a>
+                                    <a className="cl-contactus-social" target='__blank' href="https://www.instagram.com/centralluxe1?igsi=cjIybnVtNHdzdGtp&utm_source=qr"><FaInstagram /></a>
 
+                                </div>
                             </div>
                         </div>
 
@@ -75,6 +81,7 @@ export default function Contact() {
                             </div>
 
                             <button type="submit" className="cl-contactus-submit">Envoyer le message</button>
+                            
                         </form>
                     </div>
                 </div>

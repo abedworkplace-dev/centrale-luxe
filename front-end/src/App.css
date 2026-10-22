@@ -117,6 +117,9 @@ body {
 .cl-actions {
   margin-top: 50px;
 }
+.title-page{
+  padding-bottom: 50px;
+}
 
 
 header {
@@ -699,7 +702,7 @@ header.cl-header-open {
   align-items: center;
   gap: 10px;
   background: #e69a1f;
-  color: black;
+  color: white;
   text-decoration: none;
   padding: 14px 22px;
   border-radius: 999px;
@@ -3097,7 +3100,7 @@ header.cl-header-open {
   border: none;
   border-radius: 6px;
   background: #e69a1f;
-  color: black;
+  color: white;
   font-family: "Montserrat", sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -3441,7 +3444,6 @@ header.cl-header-open {
 
 .cl-faq-head {
   text-align: center;
-  margin-bottom: 48px;
 }
 
 .cl-faq-title {

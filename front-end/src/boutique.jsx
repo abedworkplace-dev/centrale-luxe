@@ -129,7 +129,7 @@ export default function Boutique() {
                 </div>
             </section>
 
-           
+
 
 
 
@@ -207,6 +207,7 @@ export default function Boutique() {
                 </div>
             </section>
 
+            {/*
             <section className="cl-reassurance">
                 <div className="container cl-reassurance-inner">
 
@@ -252,6 +253,7 @@ export default function Boutique() {
 
                 </div>
             </section>
+           */}
 
 
 
