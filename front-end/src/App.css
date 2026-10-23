@@ -2472,7 +2472,6 @@ header.cl-header-open {
 .cl-pdp-btn {
   flex: 1;
   height: 46px;
-  text-transform: uppercase;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2498,8 +2497,9 @@ header.cl-header-open {
 }
 
 .cl-pdp-btn--solid {
-  background: black;
+  background: #c87d08;
   color: white;
+  border: none;
 }
 
 .cl-pdp-wishlist {
@@ -2827,6 +2827,7 @@ header.cl-header-open {
 
 .cl-cart-promo {
   display: flex;
+  align-items: stretch;
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -2843,6 +2844,23 @@ header.cl-header-open {
   height: 42px;
 }
 
+.cl-cart-promo-btn {
+  width: auto;
+  height: auto;
+  display: block;
+  padding: 16px;
+  background: #c87d08;
+  border-radius: 6px;
+  color: white;
+  text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
 .cl-cart-promo input:focus {
   outline: none;
 }
@@ -2850,24 +2868,6 @@ header.cl-header-open {
 .cl-cart-promo input::placeholder {
   color: rgb(0, 0, 0, 0.5);
 }
-
-.cl-cart-promo button {
-  cursor: pointer;
-  border: none;
-  gap: 8px;
-  padding: 0px 8px 0px 20px;
-  font-size: 12px;
-}
-
-.cl-cart-promo button span {
-  width: 30px;
-  height: 30px;
-}
-
-.cl-cart-promo button span svg {
-  font-size: 15px;
-}
-
 .cl-cart-checkout {
   width: auto;
   display: block;

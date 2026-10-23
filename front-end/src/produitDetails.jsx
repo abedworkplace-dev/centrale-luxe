@@ -15,10 +15,10 @@ import { Link } from 'react-router-dom';
 export default function ProduitDetails() {
 
   const products = [
-      { id: 1, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 0, reviews: 120 },
-      { id: 2, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
-      { id: 3, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 4, reviews: 120 },
-      { id: 4, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
+    { id: 1, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 0, reviews: 120 },
+    { id: 2, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
+    { id: 3, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 4, reviews: 120 },
+    { id: 4, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
   ];
 
 
@@ -113,8 +113,10 @@ export default function ProduitDetails() {
       <section className="cl-collection">
         <div className="container">
 
-          <div className="cl-section-head">
-            <span className="cl-section-label"><img src={titleIcon} alt="" />Montres Similaires</span>
+
+          <div className='title-page'>
+            <h2 className="cl-section-title">Montres Similaires</h2>
+            <p className="cl-section-sub-title">Prolongez l’élégance avec des modèles qui vous ressemblent</p>
           </div>
 
           <div className="cl-collection-grid">
@@ -134,14 +136,17 @@ export default function ProduitDetails() {
                   <h3 className="cl-product-name">{p.name}</h3>
                   <span className="cl-product-price">{p.price} XOF</span>
 
-                  <Link to="/produit-details" className="cl-product-discover">
-                    Découvrir
-                  </Link>
+                  <div className="cl-product-actions">
+                    <Link to="/produit-details" className="cl-product-discover">
+                      Découvrir
+                    </Link>
+                    <button className="cl-product-cart-btn" aria-label="Ajouter au panier">
+                      <CiShoppingBasket className="i" />
+                    </button>
+                  </div>
                 </div>
 
-                <button className="cl-product-cart-btn">
-                  <CiShoppingBasket className="i" />
-                </button>
+
 
               </div>
             ))}

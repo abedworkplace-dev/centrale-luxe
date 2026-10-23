@@ -115,6 +115,20 @@
         height: 350px;
     }
 
+
+    .cl-pdp {
+        margin-top: 100px;
+    }
+
+    .cl-pdp-gallery {
+        flex-direction: column-reverse;
+    }
+
+    .cl-pdp-thumbs {
+        flex-direction: row;
+    }
+
+
 }
 
 @media (max-width: 991px) {
@@ -238,6 +252,17 @@
 
     .cl-wish-summary-box {
         padding: 24px 20px;
+    }
+
+    .cl-pdp {
+        grid-template-columns: 1fr;
+    }
+
+    .cl-pdp-gallery,
+    .cl-pdp-info {
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
     }
 
 
@@ -726,15 +751,116 @@
 
     /* Boutons d'action */
     .cl-wish-checkout,
-    .cl-wish-checkout-alt,.cl-cart-checkout {
+    .cl-wish-checkout-alt,
+    .cl-cart-checkout {
         padding: 14px;
         font-size: 14px;
     }
 
     /* État favoris vide */
-    .cl-wish-empty,.cl-cart-empty {
+    .cl-wish-empty,
+    .cl-cart-empty {
         padding: 40px 0;
         font-size: 14px;
+    }
+
+
+
+
+
+    .cl-pdp {
+        margin-top: 0px;
+        gap: 40px;
+    }
+
+    .cl-pdp-thumb {
+        width: 54px;
+        height: 54px;
+        flex-shrink: 0;
+    }
+
+    .cl-pdp-reassurance-item {
+        flex-direction: column;
+    }
+
+    /* Typographie */
+    .cl-pdp-title {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+
+    .cl-pdp-price {
+        font-size: 22px;
+    }
+
+    .cl-pdp-desc {
+        font-size: 14.5px;
+        line-height: 24px;
+        margin-bottom: 20px;
+    }
+
+    .cl-pdp-reassurance-item svg {
+        font-size: 22px;
+    }
+
+    /* Options */
+    .cl-pdp-option {
+        margin-bottom: 20px;
+    }
+
+    .cl-pdp-colors {
+        gap: 8px;
+    }
+
+    .cl-pdp-color-dot {
+        width: 28px;
+        height: 28px;
+    }
+
+    .cl-pdp-color-dot span {
+        width: 20px;
+        height: 20px;
+    }
+
+    .cl-pdp-pill {
+        padding: 8px 16px;
+        font-size: 12.5px;
+    }
+
+    /* Boutons d'action : Input + Panier sur la ligne 1, Acheter sur toute la largeur ligne 2 */
+    .cl-pdp-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .cl-pdp-actions input {
+        width: 70px;
+        height: 44px;
+        font-size: 13.5px;
+    }
+
+    .cl-pdp-btn {
+        height: 44px;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .cl-pdp-btn--outline {
+        flex: 1;
+    }
+
+    .cl-pdp-btn--solid {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+
+    /* Bouton liste d'envies centré */
+    .cl-pdp-wishlist {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 0;
+        font-size: 13.5px;
     }
 
 }

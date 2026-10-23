@@ -184,8 +184,8 @@ export default function Panier() {
 
                                 <div className="cl-cart-promo">
                                     <input type="text" placeholder="Code promo" disabled={cartItems.length === 0} />
-                                    <button className="btn-secondary" disabled={cartItems.length === 0}>
-                                        Appliquer<span><FiArrowRight /></span>
+                                    <button className="cl-cart-promo-btn" disabled={cartItems.length === 0}>
+                                        Appliquer
                                     </button>
                                 </div>
 
