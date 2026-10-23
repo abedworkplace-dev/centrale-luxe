@@ -1,21 +1,12 @@
 import React from 'react'
 import { FaTrashAlt } from "react-icons/fa";
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import './App.css'
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
-import { FaQuoteRight } from "react-icons/fa";
-import { FiEye, FiFeather, FiShield, FiTruck, FiRefreshCw, FiLock } from 'react-icons/fi';
-import { FaCheck } from "react-icons/fa6";
 import watchGold from "./assets/images/02.png"
 import watchSilver from "./assets/images/01.png"
-import titleIcon from "./assets/images/logo/title-icon.png"
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Link } from 'react-router-dom';
-import { CiShoppingBasket, CiHeart, CiSearch } from "react-icons/ci";
-import { FaHeart } from "react-icons/fa";
-import { BsHeadset } from "react-icons/bs";
 import { IoIosClose } from "react-icons/io";
+import { FiArrowRight } from 'react-icons/fi';
 
 export default function Panier() {
     const [cartItems, setCartItems] = useState([
@@ -71,14 +62,11 @@ export default function Panier() {
         );
     };
 
-
-
     const removeItem = (id) => {
         setCartItems((prev) => prev.filter((item) => item.id !== id));
     };
 
     const clearCart = () => setCartItems([]);
-
 
     const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
     const tax = Math.round(subtotal * 0.2);
@@ -87,82 +75,92 @@ export default function Panier() {
     return (
         <div>
             <section className="cl-innerhero">
-
                 <div className="container cl-innerhero-inner">
-
-                   <h1 className="cl-innerhero-title">Mon<span> Panier</span></h1>
-
+                    <h1 className="cl-innerhero-title">Mon<span> Panier</span></h1>
                 </div>
-
-
             </section>
+
             <section className="cart">
                 <div className="container">
                     <div className="cl-cart">
 
-
                         <div className="cl-cart-items">
                             <div className="cl-cart-head">
-                                <h2 className="cl-cart-title">Panier <sup>{String(cartItems.length).padStart(2, '0')}</sup></h2>
-                                <button className="cl-cart-clear" onClick={clearCart}>
-                                    <FaTrashAlt />
-                                </button>
+                                <h2 className="cl-cart-title">
+                                    Panier <sup>{String(cartItems.length).padStart(2, '0')}</sup>
+                                </h2>
+                                {cartItems.length > 0 && (
+                                    <button className="cl-cart-clear" onClick={clearCart} aria-label="Vider le panier">
+                                        <FaTrashAlt />
+                                    </button>
+                                )}
                             </div>
 
-                            {cartItems.map((item) => (
-                                <div className="cl-cart-item" key={item.id}>
+                            {cartItems.length === 0 ? (
+                                <div className="cl-cart-empty">
+                                    <p>Votre panier est actuellement vide.</p>
+                                    <Link to="/boutique" className="cl-cart-checkout">
+                                        Découvrir la boutique
+                                    </Link>
+                                </div>
+                            ) : (
+                                cartItems.map((item) => (
+                                    <div className="cl-cart-item" key={item.id}>
+                                        <div className="cl-cart-item-img">
+                                            <img src={item.img} alt={item.name} />
+                                        </div>
 
+                                        <div className="cl-cart-item-body">
+                                            <span className="cl-cart-item-tag">{item.tag}</span>
+                                            <p className="cl-cart-item-name">{item.name}</p>
 
-                                    <div className="cl-cart-item-img"><img src={item.img} alt="" /></div>
-
-                                    <div className="cl-cart-item-body">
-                                        <span className="cl-cart-item-tag">{item.tag}</span>
-                                        <p className="cl-cart-item-name">{item.name}</p>
-
-                                        <div className="cl-cart-item-variants">
-                                            <label className="cl-cart-select-wrap">
-                                                Couleur :
-                                                <select
-                                                    value={item.bracelet}
-                                                    onChange={(e) => updateVariant(item.id, 'bracelet', e.target.value)}
-                                                >
-                                                    {item.braceletOptions.map((opt) => (
-                                                        <option key={opt} value={opt}>{opt}</option>
-                                                    ))}
-                                                </select>
-                                            </label>
-
-                                            {item.tailleOptions.length > 0 && (
+                                            <div className="cl-cart-item-variants">
                                                 <label className="cl-cart-select-wrap">
-                                                    Taille :
+                                                    Couleur :
                                                     <select
-                                                        value={item.taille}
-                                                        onChange={(e) => updateVariant(item.id, 'taille', e.target.value)}
+                                                        value={item.bracelet}
+                                                        onChange={(e) => updateVariant(item.id, 'bracelet', e.target.value)}
                                                     >
-                                                        {item.tailleOptions.map((opt) => (
+                                                        {item.braceletOptions.map((opt) => (
                                                             <option key={opt} value={opt}>{opt}</option>
                                                         ))}
                                                     </select>
                                                 </label>
-                                            )}
-                                        </div>
-                                    </div>
 
-                                    <div className="cl-cart-item-right">
-                                        <div className="cl-cart-item-icons">
-                                            <button aria-label="Supprimer" onClick={() => removeItem(item.id)}><IoIosClose /></button>
-                                        </div>
-                                        <div className="cl-cart-item-bottom">
-                                            <div className="cl-cart-qty">
-                                                <button onClick={() => updateQty(item.id, -1)}>−</button>
-                                                <span>{item.qty}</span>
-                                                <button onClick={() => updateQty(item.id, 1)}>+</button>
+                                                {item.tailleOptions.length > 0 && (
+                                                    <label className="cl-cart-select-wrap">
+                                                        Taille :
+                                                        <select
+                                                            value={item.taille}
+                                                            onChange={(e) => updateVariant(item.id, 'taille', e.target.value)}
+                                                        >
+                                                            {item.tailleOptions.map((opt) => (
+                                                                <option key={opt} value={opt}>{opt}</option>
+                                                            ))}
+                                                        </select>
+                                                    </label>
+                                                )}
                                             </div>
-                                            <span className="cl-cart-item-price">{item.price * item.qty} €</span>
+                                        </div>
+
+                                        <div className="cl-cart-item-right">
+                                            <div className="cl-cart-item-icons">
+                                                <button aria-label="Supprimer" onClick={() => removeItem(item.id)}>
+                                                    <IoIosClose />
+                                                </button>
+                                            </div>
+                                            <div className="cl-cart-item-bottom">
+                                                <div className="cl-cart-qty">
+                                                    <button onClick={() => updateQty(item.id, -1)}>−</button>
+                                                    <span>{item.qty}</span>
+                                                    <button onClick={() => updateQty(item.id, 1)}>+</button>
+                                                </div>
+                                                <span className="cl-cart-item-price">{item.price * item.qty} €</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
 
                         <div className="cl-cart-summary">
@@ -185,12 +183,20 @@ export default function Panier() {
                                 </div>
 
                                 <div className="cl-cart-promo">
-                                    <input type="text" placeholder="Code promo" />
-                                    <button>Appliquer</button>
+                                    <input type="text" placeholder="Code promo" disabled={cartItems.length === 0} />
+                                    <button className="btn-secondary" disabled={cartItems.length === 0}>
+                                        Appliquer<span><FiArrowRight /></span>
+                                    </button>
                                 </div>
 
-                                <a href="#" className="cl-cart-checkout">Passer la commande</a>
-                                <a href="#" className="cl-cart-checkout-alt">Continuer mes achats</a>
+                                <Link 
+                                    to="#" 
+                                    className={`cl-cart-checkout-alt ${cartItems.length === 0 ? 'disabled' : ''}`}
+                                    onClick={(e) => cartItems.length === 0 && e.preventDefault()}
+                                >
+                                    Passer la commande
+                                </Link>
+                                <Link to="/boutique" className="cl-cart-checkout">Continuer mes achats</Link>
                             </div>
                         </div>
 

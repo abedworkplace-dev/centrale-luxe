@@ -117,7 +117,8 @@ body {
 .cl-actions {
   margin-top: 50px;
 }
-.title-page{
+
+.title-page {
   padding-bottom: 50px;
 }
 
@@ -307,7 +308,7 @@ header.cl-header-open {
   gap: 10px;
   margin-top: 50px;
   padding: 16px;
-  background: #e69a1f;
+  background: #c87d08;
   border-radius: 6px;
   color: black;
   text-decoration: none;
@@ -530,7 +531,7 @@ header.cl-header-open {
 .cl-hero-cta {
   display: inline-block;
   padding: 16px;
-  background: #e69a1f;
+  background: #c87d08;
   border-radius: 6px;
   color: black;
   text-decoration: none;
@@ -701,7 +702,7 @@ header.cl-header-open {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #e69a1f;
+  background: #c87d08;
   color: white;
   text-decoration: none;
   padding: 14px 22px;
@@ -994,7 +995,7 @@ header.cl-header-open {
   flex-direction: column;
   gap: 6px;
   padding-bottom: 12px;
-  border-bottom: 2px solid #e69a1f;
+  border-bottom: 2px solid #c87d08;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -1011,7 +1012,7 @@ header.cl-header-open {
   font-family: "Montserrat", sans-serif;
   font-size: 20px;
   font-weight: 600;
-  color: #e69a1f;
+  color: #c87d08;
 }
 
 /* pastille blanche "Collection Premium" */
@@ -1104,7 +1105,7 @@ header.cl-header-open {
   align-items: center;
   gap: 12px;
   padding: 0 24px;
-  color: #e69a1f;
+  color: #c87d08;
 }
 
 .cl-ab-stat:first-child {
@@ -1967,14 +1968,14 @@ header.cl-header-open {
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #e69a1f;
+  color: #c87d08;
 }
 
 .cl-promo-eyebrow i {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #e69a1f;
+  background: #c87d08;
   animation: cl-promo-pulse 1.6s ease-out infinite;
 }
 
@@ -1999,7 +2000,7 @@ header.cl-header-open {
 }
 
 .cl-promo-title span {
-  color: #e69a1f;
+  color: #c87d08;
 }
 
 .cl-promo-desc {
@@ -2823,6 +2824,7 @@ header.cl-header-open {
   color: #c87d08;
 }
 
+
 .cl-cart-promo {
   display: flex;
   gap: 10px;
@@ -2850,24 +2852,29 @@ header.cl-header-open {
 }
 
 .cl-cart-promo button {
-  background: #161513;
-  color: #f7f4ef;
-  border: none;
-  border-radius: 6px;
-  padding: 0 20px;
-  font-size: 12px;
-  font-weight: 700;
   cursor: pointer;
-  font-family: "Sora", sans-serif;
+  border: none;
+  gap: 8px;
+  padding: 0px 8px 0px 20px;
+  font-size: 12px;
+}
+
+.cl-cart-promo button span {
+  width: 30px;
+  height: 30px;
+}
+
+.cl-cart-promo button span svg {
+  font-size: 15px;
 }
 
 .cl-cart-checkout {
   width: auto;
   display: block;
   padding: 16px;
-  background: #e69a1f;
+  background: #c87d08;
   border-radius: 6px;
-  color: black;
+  color: white;
   text-decoration: none;
   font-family: "Montserrat", sans-serif;
   font-size: 15px;
@@ -2894,12 +2901,27 @@ header.cl-header-open {
   margin-bottom: 10px;
 }
 
-@media (max-width: 860px) {
-  .cl-cart {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
+/* État panier vide */
+.cl-cart-empty {
+  padding: 60px 0;
+  text-align: center;
+  font-family: "Sora", sans-serif;
+  color: rgba(0, 0, 0, 0.6);
 }
+
+.cl-cart-empty .cl-cart-checkout {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 16px 28px;
+  width: auto;
+}
+
+.cl-cart-checkout-alt.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 
 
 
@@ -3099,7 +3121,7 @@ header.cl-header-open {
   padding: 16px;
   border: none;
   border-radius: 6px;
-  background: #e69a1f;
+  background: #c87d08;
   color: white;
   font-family: "Montserrat", sans-serif;
   font-size: 15px;
@@ -3323,6 +3345,7 @@ header.cl-header-open {
 }
 
 .cl-wish-empty .cl-wish-checkout {
+  width: fit-content;
   display: inline-block;
   margin-top: 16px;
   padding: 16px 28px;
@@ -3369,10 +3392,10 @@ header.cl-header-open {
   width: 100%;
   display: block;
   padding: 16px;
-  background: #e69a1f;
+  background: #c87d08;
   border: none;
   border-radius: 6px;
-  color: black;
+  color: white;
   text-decoration: none;
   font-family: "Montserrat", sans-serif;
   font-size: 15px;
@@ -3400,23 +3423,6 @@ header.cl-header-open {
   margin-bottom: 10px;
 }
 
-@media (max-width: 860px) {
-  .cl-wish {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .cl-wish-item {
-    flex-wrap: wrap;
-  }
-
-  .cl-wish-item-right {
-    width: 100%;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
 
 
 
@@ -3534,7 +3540,7 @@ header.cl-header-open {
 }
 
 .cl-faq-item.open .cl-faq-toggle {
-  background: #e69a1f;
+  background: #c87d08;
   color: black;
   transform: rotate(45deg);
 }
@@ -3609,7 +3615,7 @@ header.cl-header-open {
 }
 
 .cl-faq-more-btn:hover {
-  border-color: #e69a1f;
+  border-color: #c87d08;
 }
 
 .cl-faq-more-btn span {
@@ -3625,7 +3631,7 @@ header.cl-header-open {
 }
 
 .cl-faq-more-btn:hover span {
-  background: #e69a1f;
+  background: #c87d08;
   color: black;
 }
 

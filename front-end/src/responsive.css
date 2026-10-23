@@ -189,6 +189,58 @@
     }
 
 
+    .cl-cart {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 50px 0;
+    }
+
+    .cl-cart-summary {
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+
+    .cl-cart {
+        gap: 40px;
+        padding: 40px 0;
+    }
+
+    .cl-cart-summary {
+        max-width: 100%;
+    }
+
+    .cl-cart-summary-box {
+        padding: 24px 20px;
+    }
+
+    .cl-wish {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 50px 0;
+    }
+
+    .cl-wish-summary {
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .cl-wish {
+        gap: 40px;
+        padding: 40px 0;
+    }
+
+    .cl-wish-summary {
+        max-width: 100%;
+    }
+
+    .cl-wish-summary-box {
+        padding: 24px 20px;
+    }
+
+
 }
 
 
@@ -440,5 +492,249 @@
         text-align: left;
     }
 
+
+    .cl-cart {
+        padding: 30px 0 60px;
+        gap: 36px;
+    }
+
+    .cl-cart-head {
+        padding-bottom: 16px;
+        margin-bottom: 4px;
+    }
+
+    .cl-cart-title {
+        font-size: 24px;
+    }
+
+    .cl-cart-title sup {
+        font-size: 15px;
+    }
+
+    /* Structure de chaque article sur mobile */
+    .cl-cart-item {
+        position: relative;
+        flex-wrap: wrap;
+        gap: 14px;
+        padding: 20px 0;
+    }
+
+    .cl-cart-item-img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .cl-cart-item-body {
+        flex: 1;
+        min-width: 160px;
+        padding-right: 28px;
+        /* espace pour la croix de suppression */
+    }
+
+    .cl-cart-item-tag {
+        font-size: 9px;
+        padding: 2px 7px;
+        margin-bottom: 8px;
+    }
+
+    .cl-cart-item-name {
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+
+    .cl-cart-item-variants {
+        gap: 10px;
+    }
+
+    .cl-cart-select-wrap {
+        font-size: 13px;
+    }
+
+    .cl-cart-select-wrap select {
+        font-size: 12px;
+        padding: 2px 14px 2px 4px;
+    }
+
+    /* Bouton supprimer positionné en haut à droite */
+    .cl-cart-item-right {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0;
+    }
+
+    .cl-cart-item-icons {
+        position: absolute;
+        top: 18px;
+        right: 0;
+    }
+
+    .cl-cart-item-icons svg {
+        font-size: 22px;
+    }
+
+    /* Ligne quantité + prix en bas de la carte */
+    .cl-cart-item-bottom {
+        width: 100%;
+        justify-content: space-between;
+        padding-top: 8px;
+        border-top: 1px dashed rgba(22, 21, 19, 0.08);
+    }
+
+    .cl-cart-qty {
+        gap: 10px;
+    }
+
+
+
+    /* Récapitulatif commande */
+    .cl-cart-summary-title {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .cl-cart-summary-box {
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+
+    .cl-cart-summary-row,
+    .cl-cart-summary-total {
+        font-size: 13.5px;
+    }
+
+    .cl-cart-summary-total span:last-child {
+        font-size: 16px;
+    }
+
+
+
+    .cl-wish {
+        padding: 30px 0 60px;
+        gap: 36px;
+    }
+
+    .cl-wish-head {
+        padding-bottom: 16px;
+        margin-bottom: 4px;
+    }
+
+    .cl-wish-title {
+        font-size: 24px;
+    }
+
+    .cl-wish-title sup {
+        font-size: 15px;
+    }
+
+    /* Structure de chaque carte favori sur mobile */
+    .cl-wish-item {
+        position: relative;
+        flex-wrap: wrap;
+        gap: 14px;
+        padding: 20px 0;
+    }
+
+    .cl-wish-item-img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .cl-wish-item-body {
+        flex: 1;
+        min-width: 160px;
+        padding-right: 28px;
+        /* Dégage la place pour la croix de suppression */
+    }
+
+    .cl-wish-item-tag {
+        font-size: 9px;
+        padding: 2px 7px;
+        margin-bottom: 8px;
+    }
+
+    .cl-wish-item-name {
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+
+    .cl-wish-stock {
+        font-size: 12px;
+    }
+
+    /* Bouton supprimer (croix) en haut à droite */
+    .cl-wish-item-right {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0;
+    }
+
+    .cl-wish-item-icons {
+        position: absolute;
+        top: 18px;
+        right: 0;
+    }
+
+    .cl-wish-item-icons svg {
+        font-size: 22px;
+    }
+
+    /* Ligne prix + bouton d'ajout en bas */
+    .cl-wish-item-bottom {
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 10px;
+        border-top: 1px dashed rgba(22, 21, 19, 0.08);
+    }
+
+    .cl-wish-item-price {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .cl-wish-add {
+        padding: 8px 14px;
+        font-size: 11.5px;
+    }
+
+    .cl-wish-add svg {
+        font-size: 16px;
+    }
+
+    /* Récapitulatif sélection */
+    .cl-wish-summary-title {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .cl-wish-summary-box {
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+
+    .cl-wish-summary-row {
+        font-size: 13.5px;
+    }
+
+    .cl-wish-summary-divider {
+        margin: 14px 0 18px;
+    }
+
+    /* Boutons d'action */
+    .cl-wish-checkout,
+    .cl-wish-checkout-alt,.cl-cart-checkout {
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    /* État favoris vide */
+    .cl-wish-empty,.cl-cart-empty {
+        padding: 40px 0;
+        font-size: 14px;
+    }
 
 }
