@@ -13,6 +13,17 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Link } from 'react-router-dom';
 import { BsShieldCheck, BsTruck, BsHeadset, BsGem, BsArrowRight, BsPlayCircle, BsPeople, BsGeoAlt } from "react-icons/bs";
 import { FiArrowRight } from 'react-icons/fi';
+import { FaHeart } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import SEO from './seo';
+
+
+
+// En haut de src/home.jsx :
+import { useSelector, useDispatch } from 'react-redux';
+import { selectAllProducts, setSelectedProduct } from './redux/productSlice';
+import { addToCart } from './redux/cartSlice';
+import { toggleWishlist, selectWishlistItems } from './redux/wishlistSlice';
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -68,7 +79,10 @@ function Home() {
 
 
 
-
+    const dispatch = useDispatch();
+    const products = useSelector(selectAllProducts);
+    const wishlistItems = useSelector(selectWishlistItems);
+    const isItemInWishlist = (id) => wishlistItems.some(item => item.id === id);
 
 
 
@@ -98,13 +112,23 @@ function Home() {
 
     const pad = (n) => String(n).padStart(2, '0');
 
+    const navigate = useNavigate();
+
+    const handleProductClick = (productId) => {
+        dispatch(setSelectedProduct(productId));
+        navigate('/produit-details');
+    };
+
 
 
 
     return (
         <div>
 
-
+            <SEO
+                title="Horlogerie d'Exception & Montres de Luxe"
+                description="Central Luxe vous propose des montres façonnées avec des matériaux soignés, alliant élégance intemporelle et précision horlogère. Livraison partout au Bénin."
+            />
             <div className="cl-hero">
                 <div className="container cl-hero-inner">
 
@@ -322,37 +346,62 @@ function Home() {
                     </div>
 
                     <div className="cl-collection-grid">
-
-                        {products.map((p) => (
-                            <div className="cl-product-card" key={p.id}>
-
+                        {products.slice(0, 4).map((p) => (
+                            <div
+                                className="cl-product-card"
+                                key={p.id}
+                                onClick={() => handleProductClick(p.id)}
+                            >
                                 <div className="cl-product-img-wrap">
                                     {p.isNew && <span className="cl-product-badge">New</span>}
-                                    <button className="cl-product-heart">
-                                        <CiHeart className="i" />
+                                    <button
+                                        type="button"
+                                        className="cl-product-heart"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            dispatch(toggleWishlist(p));
+                                        }}
+                                        aria-label={isItemInWishlist(p.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                                    >
+                                        {isItemInWishlist(p.id) ? (
+                                            <FaHeart style={{ fontSize: '18px', color: '#c87d08' }} />
+                                        ) : (
+                                            <CiHeart className="i" />
+                                        )}
                                     </button>
                                     <img src={p.img} alt={p.name} className="cl-product-img" />
                                 </div>
 
                                 <div className="cl-product-info">
                                     <h3 className="cl-product-name">{p.name}</h3>
-                                    <span className="cl-product-price">{p.price} XOF</span>
+                                    <span className="cl-product-price">{p.price.toLocaleString('fr-FR')} XOF</span>
 
                                     <div className="cl-product-actions">
-                                        <Link to="/produit-details" className="cl-product-discover">
+                                        <button
+                                            type="button"
+                                            className="cl-product-discover"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleProductClick(p.id);
+                                            }}
+                                        >
                                             Découvrir
-                                        </Link>
-                                        <button className="cl-product-cart-btn" aria-label="Ajouter au panier">
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="cl-product-cart-btn"
+                                            aria-label="Ajouter au panier"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                dispatch(addToCart(p));
+                                            }}
+                                        >
                                             <CiShoppingBasket className="i" />
                                         </button>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         ))}
-
                     </div>
 
                     <div className="cl-actions">

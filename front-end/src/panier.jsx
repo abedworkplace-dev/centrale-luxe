@@ -1,79 +1,140 @@
-import React from 'react'
+// src/panier.jsx
+import React, { useState } from 'react';
 import { FaTrashAlt } from "react-icons/fa";
-import { useState } from 'react'
-import './App.css'
-import watchGold from "./assets/images/02.png"
-import watchSilver from "./assets/images/01.png"
-import { Link } from 'react-router-dom';
+import './App.css';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoIosClose } from "react-icons/io";
-import { FiArrowRight } from 'react-icons/fi';
+import { useSelector, useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
+import SEO from './SEO';
+import {
+    selectCartItems,
+    updateQty,
+    updateVariant,
+    removeFromCart,
+    clearCart,
+    selectCartSubtotal
+} from './redux/cartSlice';
+
+const API_BASE = "http://localhost:5000/api";
+
+const VALID_PROMO_CODES = {
+    'LUXE10': 0.10,
+    'BIENVENUE': 0.15,
+    'PROMO20': 0.20
+};
+
+// Helper pour extraire le texte qu'il s'agisse d'un string ou d'un objet { label, img }
+const getOptionLabel = (option) => {
+    if (!option) return '';
+    if (typeof option === 'string') return option;
+    return option.label || option.name || '';
+};
 
 export default function Panier() {
-    const [cartItems, setCartItems] = useState([
-        {
-            id: 1,
-            tag: 'Acier',
-            name: 'Acier brossé',
-            img: watchGold,
-            price: 390,
-            qty: 1,
-            bracelet: 'Cuir marron',
-            braceletOptions: ['Cuir marron', 'Cuir noir', 'Acier'],
-            taille: '40 mm',
-            tailleOptions: ['36 mm', '40 mm'],
-        },
-        {
-            id: 2,
-            tag: 'Or rose',
-            name: 'Le Méridien',
-            img: watchGold,
-            price: 450,
-            qty: 1,
-            bracelet: 'Maille milanaise',
-            braceletOptions: ['Maille milanaise', 'Cuir marron', 'Acier'],
-            taille: '36 mm',
-            tailleOptions: ['36 mm', '40 mm'],
-        },
-        {
-            id: 3,
-            tag: 'Accessoire',
-            name: 'Bracelet cuir',
-            img: watchSilver,
-            price: 65,
-            qty: 1,
-            bracelet: '20 mm',
-            braceletOptions: ['20 mm', '22 mm'],
-            taille: null,
-            tailleOptions: [],
-        },
-    ]);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const cartItems = useSelector(selectCartItems);
+    const subtotal = useSelector(selectCartSubtotal);
 
-    const updateQty = (id, delta) => {
-        setCartItems((prev) =>
-            prev.map((item) =>
-                item.id === id ? { ...item, qty: Math.max(1, item.qty + delta) } : item
-            )
-        );
+    // Code promo
+    const [promoInput, setPromoInput] = useState('');
+    const [appliedCode, setAppliedCode] = useState('');
+    const [appliedDiscountRate, setAppliedDiscountRate] = useState(0);
+    const [promoMessage, setPromoMessage] = useState(null);
+
+    // Modal commande
+    const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+    const [customer, setCustomer] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+        notes: ''
+    });
+    const [orderLoading, setOrderLoading] = useState(false);
+    const [orderError, setOrderError] = useState(null);
+
+    const handleApplyPromo = () => {
+        const cleanCode = promoInput.trim().toUpperCase();
+        if (VALID_PROMO_CODES[cleanCode]) {
+            setAppliedDiscountRate(VALID_PROMO_CODES[cleanCode]);
+            setAppliedCode(cleanCode);
+            setPromoMessage({ type: 'success', text: `Code ${cleanCode} appliqué (-${VALID_PROMO_CODES[cleanCode] * 100}%)` });
+        } else {
+            setPromoMessage({ type: 'error', text: 'Code promo invalide' });
+        }
     };
 
-    const updateVariant = (id, field, value) => {
-        setCartItems((prev) =>
-            prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
-        );
+    const discountAmount = Math.round(subtotal * appliedDiscountRate);
+    const total = Math.max(0, subtotal - discountAmount);
+
+    const handleOrderSubmit = async (e) => {
+        e.preventDefault();
+        setOrderLoading(true);
+        setOrderError(null);
+
+        try {
+            const res = await fetch(`${API_BASE}/orders`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    customer,
+                    items: cartItems,
+                    subtotal,
+                    discount: discountAmount,
+                    promoCode: appliedCode,
+                    total
+                })
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                setIsCheckoutModalOpen(false);
+                dispatch(clearCart());
+                setOrderLoading(false);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '<span class="cl-swal-title">Commande Confirmée !</span>',
+                    html: `
+                        <div class="cl-swal-content">
+                            <p class="cl-swal-lead">
+                                Merci pour votre confiance, <strong>${customer.name}</strong>.
+                            </p>
+                            <p class="cl-swal-info">
+                                Notre concierge vous contactera au <strong>${customer.phone}</strong> pour convenir de l'horaire de livraison à <strong>${customer.address}</strong>.
+                            </p>
+                        </div>
+                    `,
+                    confirmButtonText: 'Continuer vers la boutique',
+                    buttonsStyling: false,
+                    customClass: {
+                        popup: 'cl-swal-popup',
+                        confirmButton: 'cl-swal-btn',
+                        icon: 'cl-swal-icon'
+                    }
+                }).then(() => {
+                    navigate('/boutique');
+                });
+
+            } else {
+                setOrderLoading(false);
+                setOrderError(data.message || "Erreur lors de l'enregistrement de votre commande.");
+            }
+        } catch {
+            setOrderLoading(false);
+            setOrderError("Serveur momentanément inaccessible. Veuillez réessayer.");
+        }
     };
-
-    const removeItem = (id) => {
-        setCartItems((prev) => prev.filter((item) => item.id !== id));
-    };
-
-    const clearCart = () => setCartItems([]);
-
-    const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
-    const tax = Math.round(subtotal * 0.2);
-    const total = subtotal + tax;
 
     return (
         <div>
+            <SEO
+                title="Mon Panier"
+                description="Finalisez votre commande de montre en toute sécurité chez Central Luxe. Livraison express et soignée."
+            />
             <section className="cl-innerhero">
                 <div className="container cl-innerhero-inner">
                     <h1 className="cl-innerhero-title">Mon<span> Panier</span></h1>
@@ -83,14 +144,17 @@ export default function Panier() {
             <section className="cart">
                 <div className="container">
                     <div className="cl-cart">
-
                         <div className="cl-cart-items">
                             <div className="cl-cart-head">
                                 <h2 className="cl-cart-title">
                                     Panier <sup>{String(cartItems.length).padStart(2, '0')}</sup>
                                 </h2>
                                 {cartItems.length > 0 && (
-                                    <button className="cl-cart-clear" onClick={clearCart} aria-label="Vider le panier">
+                                    <button
+                                        className="cl-cart-clear"
+                                        onClick={() => dispatch(clearCart())}
+                                        aria-label="Vider le panier"
+                                    >
                                         <FaTrashAlt />
                                     </button>
                                 )}
@@ -104,62 +168,87 @@ export default function Panier() {
                                     </Link>
                                 </div>
                             ) : (
-                                cartItems.map((item) => (
-                                    <div className="cl-cart-item" key={item.id}>
-                                        <div className="cl-cart-item-img">
-                                            <img src={item.img} alt={item.name} />
-                                        </div>
+                                cartItems.map((item) => {
+                                    const currentBraceletLabel = getOptionLabel(item.bracelet);
 
-                                        <div className="cl-cart-item-body">
-                                            <span className="cl-cart-item-tag">{item.tag}</span>
-                                            <p className="cl-cart-item-name">{item.name}</p>
+                                    return (
+                                        <div className="cl-cart-item" key={item.cartItemId}>
+                                            <div className="cl-cart-item-img">
+                                                <img src={typeof item.img === 'string' ? item.img : item.img?.src || item.img} alt={item.name} />
+                                            </div>
 
-                                            <div className="cl-cart-item-variants">
-                                                <label className="cl-cart-select-wrap">
-                                                    Couleur :
-                                                    <select
-                                                        value={item.bracelet}
-                                                        onChange={(e) => updateVariant(item.id, 'bracelet', e.target.value)}
-                                                    >
-                                                        {item.braceletOptions.map((opt) => (
-                                                            <option key={opt} value={opt}>{opt}</option>
-                                                        ))}
-                                                    </select>
-                                                </label>
+                                            <div className="cl-cart-item-body">
+                                                <span className="cl-cart-item-tag">{getOptionLabel(item.tag) || item.tag}</span>
+                                                <p className="cl-cart-item-name">{item.name}</p>
 
-                                                {item.tailleOptions.length > 0 && (
+                                                <div className="cl-cart-item-variants">
                                                     <label className="cl-cart-select-wrap">
-                                                        Taille :
+                                                        Couleur :
                                                         <select
-                                                            value={item.taille}
-                                                            onChange={(e) => updateVariant(item.id, 'taille', e.target.value)}
+                                                            value={currentBraceletLabel}
+                                                            onChange={(e) => dispatch(updateVariant({
+                                                                cartItemId: item.cartItemId,
+                                                                field: 'bracelet',
+                                                                value: e.target.value
+                                                            }))}
                                                         >
-                                                            {item.tailleOptions.map((opt) => (
-                                                                <option key={opt} value={opt}>{opt}</option>
-                                                            ))}
+                                                            {item.braceletOptions?.map((opt, idx) => {
+                                                                const label = getOptionLabel(opt);
+                                                                return (
+                                                                    <option key={label || idx} value={label}>
+                                                                        {label}
+                                                                    </option>
+                                                                );
+                                                            })}
                                                         </select>
                                                     </label>
-                                                )}
-                                            </div>
-                                        </div>
 
-                                        <div className="cl-cart-item-right">
-                                            <div className="cl-cart-item-icons">
-                                                <button aria-label="Supprimer" onClick={() => removeItem(item.id)}>
-                                                    <IoIosClose />
-                                                </button>
-                                            </div>
-                                            <div className="cl-cart-item-bottom">
-                                                <div className="cl-cart-qty">
-                                                    <button onClick={() => updateQty(item.id, -1)}>−</button>
-                                                    <span>{item.qty}</span>
-                                                    <button onClick={() => updateQty(item.id, 1)}>+</button>
+                                                    {item.tailleOptions?.length > 0 && (
+                                                        <label className="cl-cart-select-wrap">
+                                                            Taille :
+                                                            <select
+                                                                value={getOptionLabel(item.taille)}
+                                                                onChange={(e) => dispatch(updateVariant({
+                                                                    cartItemId: item.cartItemId,
+                                                                    field: 'taille',
+                                                                    value: e.target.value
+                                                                }))}
+                                                            >
+                                                                {item.tailleOptions.map((opt, idx) => {
+                                                                    const label = getOptionLabel(opt);
+                                                                    return (
+                                                                        <option key={label || idx} value={label}>
+                                                                            {label}
+                                                                        </option>
+                                                                    );
+                                                                })}
+                                                            </select>
+                                                        </label>
+                                                    )}
                                                 </div>
-                                                <span className="cl-cart-item-price">{item.price * item.qty} €</span>
+                                            </div>
+
+                                            <div className="cl-cart-item-right">
+                                                <div className="cl-cart-item-icons">
+                                                    <button
+                                                        aria-label="Supprimer"
+                                                        onClick={() => dispatch(removeFromCart(item.cartItemId))}
+                                                    >
+                                                        <IoIosClose />
+                                                    </button>
+                                                </div>
+                                                <div className="cl-cart-item-bottom">
+                                                    <div className="cl-cart-qty">
+                                                        <button onClick={() => dispatch(updateQty({ cartItemId: item.cartItemId, delta: -1 }))}>−</button>
+                                                        <span>{item.qty}</span>
+                                                        <button onClick={() => dispatch(updateQty({ cartItemId: item.cartItemId, delta: 1 }))}>+</button>
+                                                    </div>
+                                                    <span className="cl-cart-item-price">{(item.price * item.qty).toLocaleString('fr-FR')} XOF</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))
+                                    );
+                                })
                             )}
                         </div>
 
@@ -170,39 +259,157 @@ export default function Panier() {
                                     <span>Articles sélectionnés</span>
                                     <span>{String(cartItems.length).padStart(2, '0')} articles</span>
                                 </div>
-                                <div className="cl-cart-summary-row"><span>Sous-total</span><span>{subtotal} €</span></div>
-                                <div className="cl-cart-summary-row"><span>Livraison estimée</span><span>Offerte</span></div>
-                                <div className="cl-cart-summary-row"><span>TVA (20%)</span><span>{tax} €</span></div>
-                                <div className="cl-cart-summary-row"><span>Remise</span><span>−0 €</span></div>
+                                <div className="cl-cart-summary-row">
+                                    <span>Sous-total</span>
+                                    <span>{subtotal.toLocaleString('fr-FR')} XOF</span>
+                                </div>
+                                <div className="cl-cart-summary-row">
+                                    <span>Livraison estimée</span>
+                                    <span>Offerte</span>
+                                </div>
+                                <div className="cl-cart-summary-row">
+                                    <span>Remise</span>
+                                    <span>{discountAmount > 0 ? `−${discountAmount.toLocaleString('fr-FR')} XOF` : '−0 XOF'}</span>
+                                </div>
 
                                 <hr className="cl-cart-summary-divider" />
 
                                 <div className="cl-cart-summary-total">
                                     <span>Total à payer</span>
-                                    <span>{total} €</span>
+                                    <span>{total.toLocaleString('fr-FR')} XOF</span>
                                 </div>
 
                                 <div className="cl-cart-promo">
-                                    <input type="text" placeholder="Code promo" disabled={cartItems.length === 0} />
-                                    <button className="cl-cart-promo-btn" disabled={cartItems.length === 0}>
+                                    <input
+                                        type="text"
+                                        placeholder="Code promo (ex: LUXE10)"
+                                        value={promoInput}
+                                        onChange={(e) => setPromoInput(e.target.value)}
+                                        disabled={cartItems.length === 0}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="cl-cart-promo-btn"
+                                        disabled={cartItems.length === 0}
+                                        onClick={handleApplyPromo}
+                                    >
                                         Appliquer
                                     </button>
                                 </div>
 
-                                <Link 
-                                    to="#" 
+                                {promoMessage && (
+                                    <p className={`cl-cart-promo-msg ${promoMessage.type}`}>
+                                        {promoMessage.text}
+                                    </p>
+                                )}
+
+                                <button
+                                    type="button"
                                     className={`cl-cart-checkout-alt ${cartItems.length === 0 ? 'disabled' : ''}`}
-                                    onClick={(e) => cartItems.length === 0 && e.preventDefault()}
+                                    disabled={cartItems.length === 0}
+                                    onClick={() => setIsCheckoutModalOpen(true)}
                                 >
                                     Passer la commande
-                                </Link>
+                                </button>
                                 <Link to="/boutique" className="cl-cart-checkout">Continuer mes achats</Link>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
+
+            {/* MODAL COMMANDE */}
+            {isCheckoutModalOpen && (
+                <div className="cl-modal-overlay">
+                    <div className="cl-modal-card">
+                        <button
+                            type="button"
+                            className="cl-modal-close"
+                            onClick={() => {
+                                setIsCheckoutModalOpen(false);
+                                setOrderError(null);
+                            }}
+                            aria-label="Fermer la boîte de dialogue"
+                        >
+                            <IoIosClose />
+                        </button>
+
+                        <form className="cl-checkout-form" onSubmit={handleOrderSubmit}>
+                            <h3 className="cl-checkout-title">Finaliser votre commande</h3>
+                            <p className="cl-checkout-sub">
+                                Montant total : <strong>{total.toLocaleString('fr-FR')} XOF</strong>
+                            </p>
+
+                            {orderError && (
+                                <div className="cl-checkout-error">
+                                    {orderError}
+                                </div>
+                            )}
+
+                            <div className="cl-contactus-field">
+                                <label>Nom complet *</label>
+                                <input
+                                    type="text"
+                                    required
+                                    placeholder="Ex: Jean Dupont"
+                                    value={customer.name}
+                                    onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
+                                />
+                            </div>
+
+                            <div className="cl-contactus-field">
+                                <label>Numéro de Téléphone (WhatsApp de préférence) *</label>
+                                <input
+                                    type="tel"
+                                    required
+                                    placeholder="Ex: +229 97 00 00 00"
+                                    value={customer.phone}
+                                    onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
+                                />
+                            </div>
+
+                            <div className="cl-contactus-field">
+                                <label>Email (pour recevoir le reçu)</label>
+                                <input
+                                    type="email"
+                                    placeholder="Ex: jean.dupont@email.com"
+                                    value={customer.email}
+                                    onChange={(e) => setCustomer({ ...customer, email: e.target.value })}
+                                />
+                            </div>
+
+                            <div className="cl-contactus-field">
+                                <label>Ville & Quartier de livraison *</label>
+                                <input
+                                    type="text"
+                                    required
+                                    placeholder="Ex: Cotonou, Haie Vive"
+                                    value={customer.address}
+                                    onChange={(e) => setCustomer({ ...customer, address: e.target.value })}
+                                />
+                            </div>
+
+                            <div className="cl-contactus-field">
+                                <label>Note additionnelle (optionnelle)</label>
+                                <textarea
+                                    className="cl-checkout-textarea"
+                                    placeholder="Précisions pour la livraison..."
+                                    value={customer.notes}
+                                    onChange={(e) => setCustomer({ ...customer, notes: e.target.value })}
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="cl-wish-checkout"
+                                disabled={orderLoading}
+                            >
+                                {orderLoading ? 'Envoi en cours...' : 'Confirmer la commande'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
-    )
+    );
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { FiDroplet, FiTruck, FiRefreshCw, FiShield, FiCreditCard, FiPlus, FiArrowRight } from 'react-icons/fi';
 import { useState } from 'react';
+import SEO from './seo';
 
 export default function Faq() {
     const faqs = [
@@ -38,6 +39,10 @@ export default function Faq() {
     };
     return (
         <div>
+            <SEO
+                title="Questions Fréquentes (FAQ)"
+                description="Toutes les réponses à vos questions concernant la garantie de 2 ans, l'étanchéité 5 ATM, la livraison et les retours de vos montres Central Luxe."
+            />
             <section className="cl-innerhero">
 
                 <div className="container cl-innerhero-inner">

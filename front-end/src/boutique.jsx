@@ -1,31 +1,28 @@
-import React from 'react'
-import { FiEye, FiFeather, FiShield, FiTruck, FiRefreshCw, FiLock } from 'react-icons/fi';
+// src/boutique.jsx
+import React, { useState, useRef, useEffect } from 'react';
 import { CiShoppingBasket, CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
-import { FaQuoteRight } from "react-icons/fa";
-import titleIcon from "./assets/images/logo/title-icon.png"
-import { FaCheck } from "react-icons/fa6";
-import watchGold from "./assets/images/02.png"
-import watchSilver from "./assets/images/01.png"
-import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiSliders, FiChevronDown } from 'react-icons/fi';
 import { TbArrowsSort } from 'react-icons/tb';
-import { FiArrowRight } from 'react-icons/fi';
+import SEO from './seo';
+
+// Redux
+import { useSelector, useDispatch } from 'react-redux';
+import { selectAllProducts, setSelectedProduct } from './redux/productSlice';
+import { addToCart } from './redux/cartSlice';
+import { toggleWishlist, selectWishlistItems } from './redux/wishlistSlice';
 
 export default function Boutique() {
-    const products = [
-        { id: 1, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 0, reviews: 120 },
-        { id: 2, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
-        { id: 3, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 4, reviews: 120 },
-        { id: 4, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
-        { id: 5, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 0, reviews: 120 },
-        { id: 6, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
-        { id: 7, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 4, reviews: 120 },
-        { id: 8, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
-        { id: 9, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
-    ];
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
+    // Récupération des produits et favoris depuis Redux
+    const products = useSelector(selectAllProducts);
+    const wishlistItems = useSelector(selectWishlistItems);
+
+    const isItemInWishlist = (id) => wishlistItems.some((item) => item.id === id);
 
     const [activeFilter, setActiveFilter] = useState('tous');
     const [sortBy, setSortBy] = useState('recommandes');
@@ -36,12 +33,16 @@ export default function Boutique() {
         { id: 'recommandes', label: 'Recommandés' },
     ];
 
+    const getNumericPrice = (p) => {
+        if (typeof p.price === 'number') return p.price;
+        return parseInt(String(p.price).replace(/\s/g, ''), 10) || 0;
+    };
 
     const displayedProducts = products
         .filter((p) => activeFilter === 'tous' || (activeFilter === 'nouveautes' && p.isNew) || activeFilter === 'recommandes')
         .sort((a, b) => {
-            if (sortBy === 'prix-asc') return parseInt(a.price.replace(/\s/g, '')) - parseInt(b.price.replace(/\s/g, ''));
-            if (sortBy === 'prix-desc') return parseInt(b.price.replace(/\s/g, '')) - parseInt(a.price.replace(/\s/g, ''));
+            if (sortBy === 'prix-asc') return getNumericPrice(a) - getNumericPrice(b);
+            if (sortBy === 'prix-desc') return getNumericPrice(b) - getNumericPrice(a);
             return 0;
         });
 
@@ -52,14 +53,12 @@ export default function Boutique() {
     const [currentPage, setCurrentPage] = useState(1);
     const collectionRef = useRef(null);
 
-
     const totalPages = Math.ceil(displayedProducts.length / ITEMS_PER_PAGE);
 
     const paginatedProducts = displayedProducts.slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
     );
-
 
     useEffect(() => {
         setCurrentPage(1);
@@ -70,27 +69,29 @@ export default function Boutique() {
         collectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
+    const handleProductClick = (productId) => {
+        dispatch(setSelectedProduct(productId));
+        navigate('/produit-details');
+    };
+
     return (
         <div>
+            <SEO
+                title="Notre Boutique & Collection"
+                description="Parcourez notre collection exclusive de montres de prestige : modèles automatiques, sport-chic et chronographes au juste prix."
+            />
             <section className="cl-innerhero">
-
                 <div className="container cl-innerhero-inner">
-
                     <h1 className="cl-innerhero-title">Notre<span> Boutique</span></h1>
-
                 </div>
-
-
             </section>
 
             <section className="cl-filterbar">
                 <div className="container cl-filterbar-inner">
-
                     <div className="cl-filterbar-left">
                         <button className="cl-filterbar-trigger" type="button">
                             <FiSliders className="cl-filterbar-icon" />
                             <span>Filtrer</span>
-
                         </button>
 
                         <span className="cl-filterbar-divider" aria-hidden="true"></span>
@@ -125,45 +126,68 @@ export default function Boutique() {
                             <FiChevronDown />
                         </div>
                     </div>
-
                 </div>
             </section>
 
-
-
-
-
             <section className="cl-collection" ref={collectionRef}>
                 <div className="container">
-
                     <div className="cl-collection-grid">
                         {paginatedProducts.map((p) => (
-                            <div className="cl-product-card" key={p.id}>
-
+                            <div
+                                className="cl-product-card"
+                                key={p.id}
+                                onClick={() => handleProductClick(p.id)}
+                            >
                                 <div className="cl-product-img-wrap">
                                     {p.isNew && <span className="cl-product-badge">New</span>}
-                                    <button className="cl-product-heart">
-                                        <CiHeart className="i" />
+                                    <button
+                                        type="button"
+                                        className="cl-product-heart"
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Évite la redirection au clic sur le cœur
+                                            dispatch(toggleWishlist(p));
+                                        }}
+                                        aria-label={isItemInWishlist(p.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                                    >
+                                        {isItemInWishlist(p.id) ? (
+                                            <FaHeart className="i" style={{ color: '#c87d08' }} />
+                                        ) : (
+                                            <CiHeart className="i" />
+                                        )}
                                     </button>
                                     <img src={p.img} alt={p.name} className="cl-product-img" />
                                 </div>
 
                                 <div className="cl-product-info">
                                     <h3 className="cl-product-name">{p.name}</h3>
-                                    <span className="cl-product-price">{p.price} XOF</span>
+                                    <span className="cl-product-price">
+                                        {typeof p.price === 'number' ? p.price.toLocaleString('fr-FR') : p.price} XOF
+                                    </span>
 
                                     <div className="cl-product-actions">
-                                        <Link to="/produit-details" className="cl-product-discover">
+                                        <button
+                                            type="button"
+                                            className="cl-product-discover"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleProductClick(p.id);
+                                            }}
+                                        >
                                             Découvrir
-                                        </Link>
-                                        <button className="cl-product-cart-btn" aria-label="Ajouter au panier">
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="cl-product-cart-btn"
+                                            aria-label="Ajouter au panier"
+                                            onClick={(e) => {
+                                                e.stopPropagation(); // Évite la redirection au clic panier
+                                                dispatch(addToCart(p));
+                                            }}
+                                        >
                                             <CiShoppingBasket className="i" />
                                         </button>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         ))}
                     </div>
@@ -203,60 +227,8 @@ export default function Boutique() {
                             </button>
                         </nav>
                     )}
-
                 </div>
             </section>
-
-            {/*
-            <section className="cl-reassurance">
-                <div className="container cl-reassurance-inner">
-
-                    <div className="cl-reassurance-item">
-                        <span className="cl-reassurance-icon">
-                            <FiTruck className="i" />
-                        </span>
-                        <div>
-                            <p className="cl-reassurance-title">Livraison assurée 48h</p>
-                            <p className="cl-reassurance-text">Expédition rapide et suivie</p>
-                        </div>
-                    </div>
-
-                    <div className="cl-reassurance-item">
-                        <span className="cl-reassurance-icon">
-                            <FiRefreshCw className="i" />
-                        </span>
-                        <div>
-                            <p className="cl-reassurance-title">Retours sous 30 jours</p>
-                            <p className="cl-reassurance-text">Gratuits, sans justification</p>
-                        </div>
-                    </div>
-
-                    <div className="cl-reassurance-item">
-                        <span className="cl-reassurance-icon">
-                            <FiShield className="i" />
-                        </span>
-                        <div>
-                            <p className="cl-reassurance-title">Garantie 2 ans</p>
-                            <p className="cl-reassurance-text">Mouvement et boîtier couverts</p>
-                        </div>
-                    </div>
-
-                    <div className="cl-reassurance-item">
-                        <span className="cl-reassurance-icon">
-                            <FiLock className="i" />
-                        </span>
-                        <div>
-                            <p className="cl-reassurance-title">Paiement sécurisé</p>
-                            <p className="cl-reassurance-text">CB, Apple Pay, 3x sans frais</p>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-           */}
-
-
-
         </div>
-    )
+    );
 }

@@ -1401,6 +1401,7 @@ header.cl-header-open {
   justify-content: center;
   cursor: pointer;
   z-index: 1;
+  background: none;
 }
 
 .cl-product-heart .i {
@@ -2848,17 +2849,18 @@ header.cl-header-open {
   width: auto;
   height: auto;
   display: block;
-  padding: 16px;
+  padding: 12px;
   background: #c87d08;
   border-radius: 6px;
   color: white;
   text-decoration: none;
   font-family: "Montserrat", sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-align: center;
   margin-bottom: 10px;
+  border: navajowhite;
 }
 
 .cl-cart-promo input:focus {
@@ -2868,6 +2870,7 @@ header.cl-header-open {
 .cl-cart-promo input::placeholder {
   color: rgb(0, 0, 0, 0.5);
 }
+
 .cl-cart-checkout {
   width: auto;
   display: block;
@@ -3824,4 +3827,218 @@ header.cl-header-open {
   .cl-filterbar-pill {
     white-space: nowrap;
   }
+}
+
+
+
+/* ===== Panier & Modal de Commande ===== */
+
+/* Message code promo */
+.cl-cart-promo-msg {
+  font-family: "Sora", sans-serif;
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 14px;
+}
+
+.cl-cart-promo-msg.success {
+  color: #2e7d32;
+}
+
+.cl-cart-promo-msg.error {
+  color: #d32f2f;
+}
+
+/* Bouton passer commande dans le panier */
+.cl-cart-summary .cl-cart-checkout-alt {
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Modal Overlay */
+.cl-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+/* Modal Card */
+.cl-modal-card {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 520px;
+  width: 100%;
+  padding: 30px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Bouton fermer modal */
+.cl-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  color: #161513;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: color 200ms ease;
+}
+
+.cl-modal-close:hover {
+  color: #c87d08;
+}
+
+/* Formulaire Checkout */
+.cl-checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cl-checkout-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 22px;
+  color: #161513;
+  margin: 0 0 4px;
+}
+
+.cl-checkout-sub {
+  font-family: "Sora", sans-serif;
+  font-size: 13.5px;
+  color: #666;
+  margin: 0 0 10px;
+}
+
+.cl-checkout-sub strong {
+  color: #c87d08;
+}
+
+.cl-checkout-error {
+  font-family: "Sora", sans-serif;
+  font-size: 13px;
+  color: #d32f2f;
+  background: rgba(211, 47, 47, 0.1);
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(211, 47, 47, 0.2);
+}
+
+.cl-checkout-textarea {
+  min-height: 70px !important;
+}
+
+/* Succès Checkout */
+.cl-checkout-success {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.cl-checkout-success-title {
+  color: #c87d08;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  margin: 0 0 12px;
+}
+
+.cl-checkout-success-text {
+  font-family: "Sora", sans-serif;
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+/* ===== SweetAlert Pro - Central Luxe ===== */
+
+.cl-swal-popup {
+  border-radius: 20px !important;
+  padding: 35px 28px !important;
+  background: #ffffff !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(200, 125, 8, 0.2) !important;
+  max-width: 480px !important;
+}
+
+.cl-swal-icon.swal2-icon.swal2-success {
+  border-color: #c87d08 !important;
+  color: #c87d08 !important;
+}
+
+.cl-swal-icon.swal2-icon.swal2-success [class^='swal2-success-line'] {
+  background-color: #c87d08 !important;
+}
+
+.cl-swal-icon.swal2-icon.swal2-success .swal2-success-ring {
+  border-color: rgba(200, 125, 8, 0.3) !important;
+}
+
+.cl-swal-title {
+  font-family: "Montserrat", sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #111111 !important;
+  letter-spacing: -0.5px !important;
+}
+
+.cl-swal-content {
+  font-family: "Sora", sans-serif;
+  color: #444;
+  text-align: center;
+}
+
+.cl-swal-lead {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #222;
+}
+
+
+.cl-swal-info {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+}
+
+.cl-swal-btn {
+  background: #c87d08 !important;
+  color: #ffffff !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+  padding: 14px 28px !important;
+  border-radius: 8px !important;
+  border: none !important;
+  cursor: pointer !important;
+  margin-top: 15px !important;
+  transition: opacity 200ms ease, transform 200ms ease !important;
+}
+
+.cl-swal-btn:hover {
+  opacity: 0.9 !important;
+  transform: translateY(-1px) !important;
+}
+
+.cl-swal-icon.swal2-icon.swal2-error {
+  border-color: #d32f2f !important;
+  color: #d32f2f !important;
+}
+
+.cl-swal-icon.swal2-icon.swal2-warning {
+  border-color: #c87d08 !important;
+  color: #c87d08 !important;
 }
