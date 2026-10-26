@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { IoIosClose } from "react-icons/io";
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import SEO from './SEO';
+import SEO from './seo';
 import {
     selectCartItems,
     updateQty,
