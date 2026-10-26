@@ -4,7 +4,7 @@ import { FaInstagram, FaFacebookF, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import SEO from './seo';
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 export default function Contact() {
     const [formData, setFormData] = useState({

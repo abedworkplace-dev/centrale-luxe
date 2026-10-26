@@ -16,7 +16,7 @@ import {
     selectCartSubtotal
 } from './redux/cartSlice';
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 const VALID_PROMO_CODES = {
     'LUXE10': 0.10,

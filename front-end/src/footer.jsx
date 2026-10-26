@@ -4,7 +4,7 @@ import { FaInstagram, FaFacebookF, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import Swal from 'sweetalert2';
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 export default function Footer() {
     const [email, setEmail] = useState('');
