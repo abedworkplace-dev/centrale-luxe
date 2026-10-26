@@ -1,0 +1,9 @@
+# Ignorer les fichiers d'environnement
+.env
+.env.local
+.env.*.local
+*.env
+backend/.env
+
+# Garder uniquement l'exemple s'il existe
+!.env.example
