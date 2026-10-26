@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { FaInstagram, FaFacebookF, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import Swal from 'sweetalert2';
+import logo from "./assets/images/logo/01.png"
 
 const API_BASE = import.meta.env.VITE_API_URL;
 
@@ -87,7 +88,7 @@ export default function Footer() {
                     <div className="cl-footer-grid">
                         <div>
                             <div className="cl-footer-logo">
-                                <img alt="Central Luxe" src="/src/assets/images/logo/01.png" />
+                                <img alt="Central Luxe" src={logo} />
                             </div>
                             <p className="cl-footer-tagline">
                                 Des montres pensées pour durer, vendues sans intermédiaire.
