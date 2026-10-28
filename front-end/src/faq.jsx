@@ -1,6 +1,7 @@
 import React from 'react'
 import { FiDroplet, FiTruck, FiRefreshCw, FiShield, FiCreditCard, FiPlus, FiArrowRight } from 'react-icons/fi';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import SEO from './seo';
 
 export default function Faq() {
@@ -24,12 +25,7 @@ export default function Faq() {
             icon: FiShield,
             q: 'Que couvre la garantie de 2 ans ?',
             a: "Elle couvre le mouvement et le boîtier contre tout défaut de fabrication. Elle est distincte du droit de retour de 30 jours.",
-        },
-        {
-            icon: FiCreditCard,
-            q: 'Quels moyens de paiement acceptez-vous ?',
-            a: "Carte bancaire, Apple Pay et PayPal, avec possibilité de paiement en 3x sans frais. Toutes les transactions sont chiffrées.",
-        },
+        }
     ];
 
     const [openFaq, setOpenFaq] = useState(0); // 0 = première question ouverte, null = tout fermé
@@ -92,9 +88,9 @@ export default function Faq() {
                             <h3>Une autre question ?</h3>
                             <p>Notre équipe vous répond sous 24h ouvrées.</p>
                         </div>
-                        <a href="/boutique" target="_blank" rel="noreferrer" class="btn-secondary">Nous contacter<span>
+                        <Link to="/contact" class="btn-secondary">Nous contacter<span>
                             <FiArrowRight />
-                        </span></a>
+                        </span></Link>
                     </div>
 
                 </div>

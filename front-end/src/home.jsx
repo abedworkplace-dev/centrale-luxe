@@ -10,16 +10,13 @@ import watchSilver from "./assets/images/01.png"
 import titleIcon from "./assets/images/logo/title-icon.png"
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BsShieldCheck, BsTruck, BsHeadset, BsGem, BsArrowRight, BsPlayCircle, BsPeople, BsGeoAlt } from "react-icons/bs";
 import { FiArrowRight } from 'react-icons/fi';
 import { FaHeart } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
 import SEO from './seo';
 
-
-
-// En haut de src/home.jsx :
+// Redux
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAllProducts, setSelectedProduct } from './redux/productSlice';
 import { addToCart } from './redux/cartSlice';
@@ -28,7 +25,6 @@ import { toggleWishlist, selectWishlistItems } from './redux/wishlistSlice';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
 
 const colors = [
     { id: 'silver', hex: '#cfd0d2', img: watchSilver },
@@ -43,24 +39,6 @@ const features = [
     'Support client réactif'
 ];
 
-const products = [
-    { id: 1, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 0, reviews: 120 },
-    { id: 2, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
-    { id: 3, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 4, reviews: 120 },
-    { id: 4, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
-    { id: 5, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 0, reviews: 120 },
-    { id: 6, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
-    { id: 7, name: 'Chronos Élégance', price: '12 000', img: watchGold, isNew: true, rating: 4, reviews: 120 },
-    { id: 8, name: 'Chronos Sport', price: '15 500', img: watchSilver, isNew: false, rating: 5, reviews: 98 },
-];
-
-
-
-
-
-
-const aboutImg = "https://images.stockcake.com/public/c/0/c/c0c4c2d7-4c48-47aa-b124-61ba9e55445f_large/watchmaking-precision-focus-stockcake.jpg";
-
 function Home() {
     const [selectedIndex, setSelectedIndex] = useState(1); // 1 = gold par défaut
 
@@ -73,22 +51,12 @@ function Home() {
     };
 
     const selectedColor = colors[selectedIndex];
-
-
     const swiperRef = useRef(null);
-
-
 
     const dispatch = useDispatch();
     const products = useSelector(selectAllProducts);
     const wishlistItems = useSelector(selectWishlistItems);
     const isItemInWishlist = (id) => wishlistItems.some(item => item.id === id);
-
-
-
-
-
-
 
     const [timeLeft, setTimeLeft] = useState({ days: 2, hours: 12, mins: 45, secs: 30 });
 
@@ -111,7 +79,6 @@ function Home() {
     }, []);
 
     const pad = (n) => String(n).padStart(2, '0');
-
     const navigate = useNavigate();
 
     const handleProductClick = (productId) => {
@@ -119,22 +86,27 @@ function Home() {
         navigate('/produit-details');
     };
 
-
-
+    // Gestion propre du scroll vers l'ancre #avis
+    const scrollToSection = (e, id) => {
+        e.preventDefault();
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.history.pushState(null, '', `#${id}`);
+        }
+    };
 
     return (
         <div>
-
             <SEO
                 title="Horlogerie d'Exception & Montres de Luxe"
                 description="Central Luxe vous propose des montres façonnées avec des matériaux soignés, alliant élégance intemporelle et précision horlogère. Livraison partout au Bénin."
             />
+            
             <div className="cl-hero">
                 <div className="container cl-hero-inner">
-
                     <div className="cl-hero-text">
                         <h1 className="cl-hero-title">Chronos <span>Élégance</span></h1>
-
                         <p className="cl-hero-sub">
                             Des montres façonnées avec des matériaux soignés, alliant élégance intemporelle et précision horlogère pour accompagner chaque instant de votre journée.
                         </p>
@@ -155,9 +127,7 @@ function Home() {
                         </div>
 
                         <div className="cl-hero-actions">
-
-
-                            <Link to="/boutique" rel="noreferrer" className="btn-primary">
+                            <Link to="/boutique" className="btn-primary">
                                 Découvrir la collection
                                 <span><FiArrowRight /></span>
                             </Link>
@@ -187,15 +157,11 @@ function Home() {
                         <button className="cl-arrow-btn" onClick={goPrev}><HiOutlineChevronLeft /></button>
                         <button className="cl-arrow-btn" onClick={goNext}><HiOutlineChevronRight /></button>
                     </div>
-
-
-
                 </div>
             </div>
 
             <section className="cl-pillars">
                 <div className="container cl-pillars-inner">
-
                     <div className="cl-pillar-item">
                         <FiEye className="cl-pillar-bg-icon" />
                         <span className="cl-pillar-icon">
@@ -234,13 +200,11 @@ function Home() {
                             </p>
                         </div>
                     </div>
-
                 </div>
             </section>
 
             <section className="cl-about">
                 <div className="container">
-
                     {/* ===== Rangée 1 : texte à gauche, image à droite ===== */}
                     <div className="cl-ab-row">
                         <div className="cl-ab-text">
@@ -266,12 +230,10 @@ function Home() {
 
                         <div className="cl-ab-media cl-ab-media-right">
                             <img src="https://debbijoux.com/wp-content/uploads/image_webpf28mGs.webp" alt="Central Luxe" />
-
-
-                            <a href="/boutique" target="_blank" rel="noreferrer" className="btn-primary cl-ab-pill">
+                            <Link to="/boutique" className="btn-primary cl-ab-pill">
                                 Collection Premium
                                 <span><FiArrowRight /></span>
-                            </a>
+                            </Link>
                         </div>
                     </div>
 
@@ -302,12 +264,17 @@ function Home() {
                             </p>
 
                             <div className="cl-ab-actions">
-
-                                <a href="/boutique" target="_blank" rel="noreferrer" className="btn-secondary">
+                                <Link to="/boutique" className="btn-secondary">
                                     Voir la collection
                                     <span><FiArrowRight /></span>
-                                </a>
-                                <a href="#avis" className="cl-ab-link">
+                                </Link>
+                                
+                                {/* Ancre avec défilement fluide vers #avis */}
+                                <a 
+                                    href="#avis" 
+                                    onClick={(e) => scrollToSection(e, 'avis')} 
+                                    className="cl-ab-link"
+                                >
                                     <BsPlayCircle /> Découvrir notre univers
                                 </a>
                             </div>
@@ -328,15 +295,11 @@ function Home() {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </section>
 
-
-
             <section className="cl-collection">
                 <div className="container">
-
                     <div className="cl-section-head">
                         <h1 className="cl-section-title">Notre collection</h1>
                         <h2 className="cl-section-sub-title">
@@ -405,18 +368,16 @@ function Home() {
                     </div>
 
                     <div className="cl-actions">
-
-                        <a href="/boutique" target="_blank" rel="noreferrer" className="btn-secondary">
+                        <Link to="/boutique" className="btn-secondary">
                             Découvrir toute la collection
                             <span><FiArrowRight /></span>
-                        </a>
-
+                        </Link>
                     </div>
                 </div>
             </section>
 
-
-            <section className="cl-testimonials" id='avis'>
+            {/* Section cible de l'ancre */}
+            <section className="cl-testimonials" id="avis">
                 <div className="container">
                     <div className="cl-section-head center">
                         <h1 className="cl-section-title">Avis clients</h1>
@@ -425,14 +386,12 @@ function Home() {
                             <span>que nos promesses</span>
                         </h2>
                     </div>
+                    
                     <div className="cl-testimonials-track">
-
                         <div className="cl-stack-wrap">
                             <article className="cl-testimonial-card cl-testimonial-card--stat">
                                 <div className="cl-testimonial-pagination swiper-pagination" aria-hidden="true"></div>
-
                                 <p className="cl-testimonial-score"></p>
-
                                 <div className="cl-testimonial-trust">
                                     <span className="cl-testimonial-avatars">
                                         <img
@@ -458,35 +417,27 @@ function Home() {
                                 </div>
                             </article>
                         </div>
+                        
                         <Swiper
                             modules={[Autoplay, Navigation, Pagination]}
                             spaceBetween={20}
                             slidesPerView={2}
                             loop={true}
-
                             autoplay={{
                                 delay: 5000,
                                 disableOnInteraction: false,
                             }}
-
                             onSwiper={(swiper) => {
                                 swiperRef.current = swiper;
                             }}
-
                             pagination={{
                                 el: '.cl-testimonial-pagination',
                                 clickable: true,
                             }}
-
                             breakpoints={{
-                                0: {
-                                    slidesPerView: 1,
-                                },
-                                1280: {
-                                    slidesPerView: 2,
-                                },
+                                0: { slidesPerView: 1 },
+                                1280: { slidesPerView: 2 },
                             }}
-
                             className="cl-testimonials-swiper"
                         >
                             <SwiperSlide>
@@ -494,27 +445,20 @@ function Home() {
                                     <span className="cl-testimonial-mark" aria-hidden="true">
                                         <FaQuoteRight />
                                     </span>
-
                                     <p className="cl-testimonial-quote">
                                         J'étais sceptique au début, mais en trois minutes j'avais déjà de vrais devis
                                         des plus grandes enseignes. J'ai choisi le mien et j'étais couvert le jour même.
                                         Un vrai gain de temps.
                                     </p>
-
                                     <div className="cl-testimonial-author">
                                         <img
                                             src="https://images.unsplash.com/photo-1696603865152-74514c198a07?w=72&h=72&fit=crop&crop=faces&q=80"
                                             alt=""
                                             className="cl-testimonial-avatar-img cl-testimonial-avatar-img--lg"
                                         />
-
                                         <div>
-                                            <p className="cl-testimonial-name">
-                                                Malik Ferrand
-                                            </p>
-                                            <p className="cl-testimonial-city">
-                                                Lyon
-                                            </p>
+                                            <p className="cl-testimonial-name">Malik Ferrand</p>
+                                            <p className="cl-testimonial-city">Lyon</p>
                                         </div>
                                     </div>
                                 </article>
@@ -525,27 +469,20 @@ function Home() {
                                     <span className="cl-testimonial-mark" aria-hidden="true">
                                         <FaQuoteRight />
                                     </span>
-
                                     <p className="cl-testimonial-quote">
                                         Le processus a été rapide, les options claires, et j'ai vraiment compris ce que
                                         j'achetais. Aucune pression, juste une aide honnête. J'ai déjà recommandé le site
                                         à mon frère.
                                     </p>
-
                                     <div className="cl-testimonial-author">
                                         <img
                                             src="https://images.unsplash.com/photo-1525103691634-22b8f578a199?w=72&h=72&fit=crop&crop=faces&q=80"
                                             alt=""
                                             className="cl-testimonial-avatar-img cl-testimonial-avatar-img--lg"
                                         />
-
                                         <div>
-                                            <p className="cl-testimonial-name">
-                                                Pamela Diallo
-                                            </p>
-                                            <p className="cl-testimonial-city">
-                                                Bruxelles
-                                            </p>
+                                            <p className="cl-testimonial-name">Pamela Diallo</p>
+                                            <p className="cl-testimonial-city">Bruxelles</p>
                                         </div>
                                     </div>
                                 </article>
@@ -556,66 +493,27 @@ function Home() {
                                     <span className="cl-testimonial-mark" aria-hidden="true">
                                         <FaQuoteRight />
                                     </span>
-
                                     <p className="cl-testimonial-quote">
                                         Le coffret est arrivé impeccable, avec le certificat et tout le nécessaire.
                                         On voit tout de suite que le produit a été pensé jusque dans les moindres détails.
                                     </p>
-
                                     <div className="cl-testimonial-author">
                                         <img
                                             src="https://images.unsplash.com/photo-1598956066123-a6f006500ca4?w=72&h=72&fit=crop&crop=faces&q=80"
                                             alt=""
                                             className="cl-testimonial-avatar-img cl-testimonial-avatar-img--lg"
                                         />
-
                                         <div>
-                                            <p className="cl-testimonial-name">
-                                                Amara Nkosi
-                                            </p>
-                                            <p className="cl-testimonial-city">
-                                                Genève
-                                            </p>
+                                            <p className="cl-testimonial-name">Amara Nkosi</p>
+                                            <p className="cl-testimonial-city">Genève</p>
                                         </div>
                                     </div>
                                 </article>
                             </SwiperSlide>
-                            <SwiperSlide>
-                                <article className="cl-testimonial-card">
-                                    <span className="cl-testimonial-mark" aria-hidden="true">
-                                        <FaQuoteRight />
-                                    </span>
-
-                                    <p className="cl-testimonial-quote">
-                                        Le coffret est arrivé impeccable, avec le certificat et tout le nécessaire.
-                                        On voit tout de suite que le produit a été pensé jusque dans les moindres détails.
-                                    </p>
-
-                                    <div className="cl-testimonial-author">
-                                        <img
-                                            src="https://images.unsplash.com/photo-1598956066123-a6f006500ca4?w=72&h=72&fit=crop&crop=faces&q=80"
-                                            alt=""
-                                            className="cl-testimonial-avatar-img cl-testimonial-avatar-img--lg"
-                                        />
-
-                                        <div>
-                                            <p className="cl-testimonial-name">
-                                                Amara Nkosi
-                                            </p>
-                                            <p className="cl-testimonial-city">
-                                                Genève
-                                            </p>
-                                        </div>
-                                    </div>
-                                </article>
-                            </SwiperSlide>
-
-                            {/* Ajoute d'autres SwiperSlide ici */}
                         </Swiper>
                     </div>
 
                     <div className="cl-testimonials-nav">
-
                         <button
                             type="button"
                             className="cl-testimonials-nav-btn"
@@ -624,7 +522,6 @@ function Home() {
                         >
                             <HiOutlineChevronLeft />
                         </button>
-
                         <button
                             type="button"
                             className="cl-testimonials-nav-btn"
@@ -633,7 +530,6 @@ function Home() {
                         >
                             <HiOutlineChevronRight />
                         </button>
-
                     </div>
                 </div>
             </section>
@@ -662,8 +558,6 @@ function Home() {
                                 le prix revient à la normale.
                             </p>
 
-
-
                             <div className="cl-promo-timer">
                                 <div className="cl-promo-timer-item">
                                     <p className="cl-promo-timer-value">{pad(timeLeft.days)}</p>
@@ -688,16 +582,11 @@ function Home() {
                                 <span><FiArrowRight /></span>
                             </Link>
                         </div>
-
-
-
                     </div>
                 </div>
             </section>
-
-
         </div>
     );
 }
 
-export default Home
+export default Home;
