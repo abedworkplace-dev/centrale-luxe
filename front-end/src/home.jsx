@@ -157,10 +157,10 @@ function Home() {
                         <div className="cl-hero-actions">
 
 
-                            <a href="/boutique" target="_blank" rel="noreferrer" className="btn-primary">
+                            <Link to="/boutique" rel="noreferrer" className="btn-primary">
                                 Découvrir la collection
                                 <span><FiArrowRight /></span>
-                            </a>
+                            </Link>
                             <div className="cl-hero-price">
                                 <span>À partir de</span>
                                 <strong>12 000 XOF</strong>
