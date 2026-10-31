@@ -42,15 +42,11 @@ const features = [
 function Home() {
     const [selectedIndex, setSelectedIndex] = useState(1); // 1 = gold par défaut
 
-    const goPrev = () => {
-        setSelectedIndex((prev) => (prev === 0 ? colors.length - 1 : prev - 1));
-    };
-
-    const goNext = () => {
-        setSelectedIndex((prev) => (prev === colors.length - 1 ? 0 : prev + 1));
-    };
+    const goPrev = () => heroSwiperRef.current?.slidePrev();
+    const goNext = () => heroSwiperRef.current?.slideNext();
 
     const selectedColor = colors[selectedIndex];
+    const heroSwiperRef = useRef(null);
     const swiperRef = useRef(null);
 
     const dispatch = useDispatch();
@@ -102,7 +98,7 @@ function Home() {
                 title="Horlogerie d'Exception & Montres de Luxe"
                 description="Central Luxe vous propose des montres façonnées avec des matériaux soignés, alliant élégance intemporelle et précision horlogère. Livraison partout au Bénin."
             />
-            
+
             <div className="cl-hero">
                 <div className="container cl-hero-inner">
                     <div className="cl-hero-text">
@@ -119,7 +115,7 @@ function Home() {
                                         key={c.id}
                                         className={`cl-color-dot ${selectedIndex === index ? 'active' : ''}`}
                                         style={{ backgroundColor: c.hex }}
-                                        onClick={() => setSelectedIndex(index)}
+                                        onClick={() => heroSwiperRef.current?.slideToLoop(index)}
                                         aria-label={c.id}
                                     />
                                 ))}
@@ -139,7 +135,23 @@ function Home() {
                     </div>
 
                     <div className="cl-hero-watch">
-                        <img src={selectedColor.img} alt="Montre de luxe" className="cl-watch-img" />
+                        <Swiper
+                            modules={[Autoplay, Pagination]}
+                            onSwiper={(s) => (heroSwiperRef.current = s)}
+                            onRealIndexChange={(s) => setSelectedIndex(s.realIndex)}
+                            initialSlide={1}
+                            slidesPerView={1}
+                            loop
+                            speed={800}
+                            autoplay={{ delay: 3500, disableOnInteraction: false, pauseOnMouseEnter: true }}
+                            className="cl-hero-swiper"
+                        >
+                            {colors.map((c) => (
+                                <SwiperSlide key={c.id} className="cl-hero-slide">
+                                    <img src={c.img} alt="Montre de luxe" className="cl-watch-img" />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
                     </div>
 
                     <div className="cl-hero-features">
@@ -268,11 +280,11 @@ function Home() {
                                     Voir la collection
                                     <span><FiArrowRight /></span>
                                 </Link>
-                                
+
                                 {/* Ancre avec défilement fluide vers #avis */}
-                                <a 
-                                    href="#avis" 
-                                    onClick={(e) => scrollToSection(e, 'avis')} 
+                                <a
+                                    href="#avis"
+                                    onClick={(e) => scrollToSection(e, 'avis')}
                                     className="cl-ab-link"
                                 >
                                     <BsPlayCircle /> Découvrir notre univers
@@ -386,7 +398,7 @@ function Home() {
                             <span>que nos promesses</span>
                         </h2>
                     </div>
-                    
+
                     <div className="cl-testimonials-track">
                         <div className="cl-stack-wrap">
                             <article className="cl-testimonial-card cl-testimonial-card--stat">
@@ -417,7 +429,7 @@ function Home() {
                                 </div>
                             </article>
                         </div>
-                        
+
                         <Swiper
                             modules={[Autoplay, Navigation, Pagination]}
                             spaceBetween={20}

@@ -585,16 +585,41 @@ header.cl-header-open {
   height: 100%;
 }
 
+
+.cl-hero-swiper {
+  width: 100%;
+  padding: 20px 0 60px;
+  transform: translate(-100px, -70px);
+}
+
+.cl-hero-watch {
+  min-width: 0;
+}
+
+.cl-hero-slide {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.cl-hero-swiper .swiper-pagination-bullet {
+  background: #fff;
+  opacity: 0.5;
+}
+
+.cl-hero-swiper .swiper-pagination-bullet-active {
+  background: #c87d08;
+  opacity: 1;
+}
+
+
 .cl-watch-img {
   position: relative;
   z-index: 1;
   max-width: 80%;
   height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 25px 30px rgba(0, 0, 0, 0.55));
-  /*animation: cl-float 5s ease-in-out infinite;*/
-  margin-top: -70px;
-  margin-left: -100px;
+  margin: 0;
 }
 
 @keyframes cl-float {
@@ -608,6 +633,7 @@ header.cl-header-open {
     transform: translateY(-16px);
   }
 }
+
 
 /* --- Features droite --- */
 .cl-hero-features {
