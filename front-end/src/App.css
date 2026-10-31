@@ -1631,6 +1631,18 @@ header.cl-header-open {
   cursor: pointer;
 }
 
+.cl-testimonial-pagination {
+  display: flex;
+  gap: 0px;
+  margin-bottom: 14px;
+  position: absolute !important;
+  top: 50px !important;
+  left: 28px !important;
+  right: auto !important;
+  width: auto !important;
+  cursor: pointer;
+}
+
 .cl-testimonial-pagination .swiper-pagination-bullet {
   width: 10px;
   height: 10px;
